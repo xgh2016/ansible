@@ -1,0 +1,16 @@
+[web1]
+172.16.8.21
+172.16.8.22
+[web2]
+172.16.8.23
+172.16.8.24
+[test]
+172.16.8.21
+
+
+[all:vars]
+user="tomcat"
+passwd="admin"
+app_dir="/app/tools"
+jdk_dir= "/app/jdk"
+tomcat_dir="/app/tomcat_solo"

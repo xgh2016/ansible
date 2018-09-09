@@ -1,0 +1,10 @@
+  - name: 创建Tomcat用户
+    shell: groupadd -g 500 {{ user }};useradd -u 500 -d {{ tomcat_dir }}  -g {{ user }} -m  {{ user }};echo {{ "user" }} | passwd --stdin {{ user }}
+
+  - name: tomcat文件拷贝
+    copy: src={{ app_dir }}/{{ item }} dest={{ app_dir }}/{{ item }}
+    with_items:
+    - apache-tomcat-8.5.31.tar.gz
+  
+  - name: 安装Tomcat
+    shell: cd {{ app_dir }};tar xf apache-tomcat-*.tar.gz -C {{ tomcat_dir }};chown -R {{ user }}.{{ user }} {{ tomcat_dir }}

@@ -1,0 +1,26 @@
+  - name: 创建JDK软件目录
+    file: name={{ item }} state=directory
+    with_items:
+    - /app/tools
+
+  - name: tomcat文件拷贝
+    copy: src={{ app_dir }}/{{ item }} dest={{ app_dir }}/{{ item }} mode=0664  owner=root group=root
+    with_items:
+    - jdk-8u45-linux-x64.tar.gz
+
+  - name: 安装解压工具
+    package: name={{ item }} state=present
+    with_items:
+    - tar
+  - name: JAVA_HOME环境变量设置
+    lineinfile: dest=/etc/profile regexp="^export JAVA_HOME=" line="export JAVA_HOME={{ jdk_dir }}"
+ 
+  - name: PATH环境变量设置 
+    lineinfile: dest=/etc/profile regexp="^export PATH=" line="export PATH=$JAVA_HOME/bin:$PATH:$JAVA_HOME/jre/bin"
+  - name: CLASSPATH环境变量设置
+    lineinfile: dest=/etc/profile regexp="^export CLASSPATH=" line="export CLASS_PATH=$JAVA_HOME/lib:$JAVA_HOME/jre/lib"
+
+  - name: 安装jdk
+    shell: cd {{ app_dir }}/;tar xf jdk-8u45-linux-x64.tar.gz;mv jdk1.8.0_45 {{ jdk_dir }};source /etc/profile
+  - name: 删除安装文件
+    shell: rm -rf /app/tools/*  

@@ -1,0 +1,4 @@
+- hosts: test
+  roles:
+  - jdk
+  - tomcat
